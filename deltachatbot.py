@@ -13,7 +13,7 @@ import qrcode
 
 
 def main():
-    logging.getLogger().setLevel(logging.DEBUG)
+    # logging.getLogger().setLevel(logging.DEBUG)
 
     with Rpc() as rpc:
         deltachat = DeltaChat(rpc)
@@ -58,6 +58,7 @@ def main():
 
         def echo_qr():
             qr_code = account.get_qr_code()
+            logging.info("Bot QR Code:\n%s", qr_code)
             try:
                 qr = qrcode.QRCode()
                 qr.add_data(qr_code)
