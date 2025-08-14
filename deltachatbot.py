@@ -78,8 +78,6 @@ def main():
             event = account.wait_for_event()
             if event["kind"] == EventType.INFO:
                 logging.info("%s", event["msg"])
-            elif event["kind"] == EventType.WARNING:
-                logging.warning("%s", event["msg"])
             elif event["kind"] == EventType.INCOMING_MSG:
                 logging.info("Got an incoming message")
                 process_messages()
