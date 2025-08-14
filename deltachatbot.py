@@ -9,6 +9,7 @@ import sys
 from deltachat_rpc_client import DeltaChat, EventType, Rpc, SpecialContactId
 from dotenv import load_dotenv
 import os
+import qrcode
 
 
 def main():
@@ -57,7 +58,15 @@ def main():
 
         def echo_qr():
             qr_code = account.get_qr_code()
-            logging.info("Bot QR Code:\n%s", qr_code)
+            try:
+                qr = qrcode.QRCode()
+                qr.add_data(qr_code)
+                qr.make(fit=True)
+                print("Bot QR Code:")
+                qr.print_tty()
+            except ImportError:
+                logging.warning("Install 'qrcode' library to display QR code as image.")
+                logging.info("Bot QR Code:\n%s", qr_code)
 
         echo_qr()
 
