@@ -77,7 +77,8 @@ def main():
         while True:
             event = account.wait_for_event()
             if event["kind"] == EventType.INFO:
-                logging.info("%s", event["msg"])
+                #logging.info("%s", event["msg"])
+                pass
             elif event["kind"] == EventType.INCOMING_MSG:
                 logging.info("Got an incoming message")
                 process_messages()
