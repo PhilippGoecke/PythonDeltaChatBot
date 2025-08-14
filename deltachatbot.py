@@ -54,6 +54,8 @@ def main():
                 snapshot = message.get_snapshot()
                 if snapshot.from_id != SpecialContactId.SELF and not snapshot.is_bot and not snapshot.is_info:
                     snapshot.chat.send_text(snapshot.text)
+                elif snapshot.is_warning:
+                    snapshot.chat.send_text("Warning: " + snapshot.text)
                 snapshot.message.mark_seen()
 
         def echo_qr():
