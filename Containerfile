@@ -1,14 +1,14 @@
 FROM python:3.11-slim
 
-RUN useradd -ms /bin/bash deltabot
-WORKDIR /home/deltabot
+RUN useradd -ms /bin/bash deltachat
+WORKDIR /home/deltachat/bot
 
 COPY .botenv .env
 COPY deltachatbot.py .
 
-USER deltabot:deltabot
+USER deltachat:deltachat
 
 RUN pip install --no-cache-dir --upgrade pip \
-  && pip install --no-cache-dir deltachat_rpc_client deltachat-rpc-server dotenv qrcode 
+  && pip install --no-cache-dir --user deltachat_rpc_client deltachat-rpc-server dotenv qrcode 
 
 CMD ["python", "deltachatbot.py"]
