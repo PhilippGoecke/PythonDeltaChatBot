@@ -1,5 +1,5 @@
 # PythonDeltaChatBot 🤖
-Python DeltaChat Bot
+Python DeltaChat Bot 💬
 
 A simple echo bot for the [Delta Chat](https://delta.chat/) messenger 💬, built with Python 🐍. This project is based on the official [py.delta.chat JSON-RPC examples](https://py.delta.chat/jsonrpc/examples.html#echo-bot).
 
