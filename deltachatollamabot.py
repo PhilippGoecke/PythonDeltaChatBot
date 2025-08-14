@@ -70,10 +70,11 @@ def main():
         def ask_ollama(prompt):
             """Sends a prompt to the Ollama API and returns the response."""
             try:
-                ollama_host = os.getenv("OLLAMA_HOST") # e.g. "http://localhost:11434"
+                ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
                 client = ollama.Client(host=ollama_host) if ollama_host else ollama.Client()
+                ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
                 response = client.chat(
-                    model='gpt-oss:20b',
+                    model=ollama_model,
                     messages=[{'role': 'user', 'content': prompt}]
                 )
                 return response['message']['content']
