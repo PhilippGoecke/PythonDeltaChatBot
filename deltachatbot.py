@@ -30,12 +30,18 @@ def main():
 
             account.set_config("addr", os.getenv("ADDR"))
             account.set_config("mail_pw", os.getenv("MAIL_PW"))
-            account.set_config("mail_server", os.getenv("MAIL_SERVER"))
-            account.set_config("mail_port", os.getenv("MAIL_PORT"))
-            account.set_config("mail_security", os.getenv("MAIL_SECURITY"))
-            account.set_config("send_server", os.getenv("SEND_SERVER"))
-            account.set_config("send_port", os.getenv("SEND_PORT"))
-            account.set_config("send_security", os.getenv("SEND_SECURITY"))
+            if os.getenv("MAIL_SERVER"):
+                account.set_config("mail_server", os.getenv("MAIL_SERVER"))
+            if os.getenv("MAIL_PORT"):
+                account.set_config("mail_port", os.getenv("MAIL_PORT"))
+            if os.getenv("MAIL_SECURITY"):
+                account.set_config("mail_security", os.getenv("MAIL_SECURITY"))
+            if os.getenv("SEND_SERVER"):
+                account.set_config("send_server", os.getenv("SEND_SERVER"))
+            if os.getenv("SEND_PORT"):
+                account.set_config("send_port", os.getenv("SEND_PORT"))
+            if os.getenv("SEND_SECURITY"):
+                account.set_config("send_security", os.getenv("SEND_SECURITY"))
             account.configure()
             logging.info("Configured")
         else:
