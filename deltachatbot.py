@@ -80,15 +80,6 @@ def main():
                 logging.info("%s", event["msg"])
             elif event["kind"] == EventType.WARNING:
                 logging.warning("%s", event["msg"])
-                if "Decryption failed" in event["msg"] and "msg_id" in event:
-                    logging.warning("Decryption failed for a message, maybe you're missing a key.")
-                    msg = account.get_message_by_id(event["msg_id"])
-                    if msg:
-                       snapshot = msg.get_snapshot()
-                       snapshot.chat.send_text(
-                           "I could not decrypt your message. "
-                           "Maybe we need to exchange keys again or you have to send a new key."
-                       )
             elif event["kind"] == EventType.INCOMING_MSG:
                 logging.info("Got an incoming message")
                 process_messages()
