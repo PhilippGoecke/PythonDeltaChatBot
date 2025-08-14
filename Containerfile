@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-RUN adduser deltabot
+RUN useradd -ms /bin/bash deltabot
 WORKDIR /home/deltabot
 
 COPY .botenv .env
