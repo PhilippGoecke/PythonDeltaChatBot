@@ -10,8 +10,7 @@ from deltachat_rpc_client import DeltaChat, EventType, Rpc, SpecialContactId
 from dotenv import load_dotenv
 import os
 import qrcode
-import requests
-import json
+import ollama
 
 def main():
     # logging.getLogger().setLevel(logging.DEBUG)
@@ -71,24 +70,19 @@ def main():
         def ask_ollama(prompt):
             """Sends a prompt to the Ollama API and returns the response."""
             try:
-                r = requests.post(
-                    "http://localhost:11434/api/chat",
-                    json={
-                        "model": "gpt-oss:20b",
-                        "messages": [{"role": "user", "content": prompt}],
-                        "stream": False,
-                    },
-                    timeout=60,
+                ollama_host = os.getenv("OLLAMA_HOST") # e.g. "http://localhost:11434"
+                client = ollama.Client(host=ollama_host) if ollama_host else ollama.Client()
+                response = client.chat(
+                    model='gpt-oss:20b',
+                    messages=[{'role': 'user', 'content': prompt}]
                 )
-                r.raise_for_status()
-                body = r.json()
-                return body.get("message", {}).get("content", "No response from model.")
-            except requests.exceptions.RequestException as e:
-                logging.error("Error connecting to Ollama: %s", e)
+                return response['message']['content']
+            except ollama.ResponseError as e:
+                logging.error("Error from Ollama: %s", e.error)
+                return f"Error: {e.error}"
+            except Exception as e:
+                logging.error("An unexpected error occurred with Ollama: %s", e)
                 return "Error: Could not connect to the AI service."
-            except json.JSONDecodeError:
-                logging.error("Failed to decode JSON response from Ollama")
-                return "Error: Invalid response from the AI service."
 
         def echo_qr():
             qr_code = account.get_qr_code()
