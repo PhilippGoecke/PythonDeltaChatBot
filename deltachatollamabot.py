@@ -72,17 +72,17 @@ def main():
             """Sends a prompt to the Ollama API and returns the response."""
             try:
                 r = requests.post(
-                    "http://localhost:11434/api/generate",
+                    "http://localhost:11434/api/chat",
                     json={
-                    "model": "gpt-oss:20b",
-                    "prompt": prompt,
-                    "stream": False,
+                        "model": "gpt-oss:20b",
+                        "messages": [{"role": "user", "content": prompt}],
+                        "stream": False,
                     },
                     timeout=60,
                 )
                 r.raise_for_status()
                 body = r.json()
-                return body.get("response", "No response from model.")
+                return body.get("message", {}).get("content", "No response from model.")
             except requests.exceptions.RequestException as e:
                 logging.error("Error connecting to Ollama: %s", e)
                 return "Error: Could not connect to the AI service."
