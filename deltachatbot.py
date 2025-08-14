@@ -7,6 +7,8 @@ import logging
 import sys
 
 from deltachat_rpc_client import DeltaChat, EventType, Rpc, SpecialContactId
+from dotenv import load_dotenv
+import os
 
 
 def main():
@@ -22,15 +24,18 @@ def main():
 
         account.set_config("bot", "1")
         if not account.is_configured():
-            logging.info("Account is not configured, configuring")
-            account.set_config("addr", sys.argv[1])
-            account.set_config("mail_pw", sys.argv[2])
-            account.set_config("mail_server", sys.argv[3])
-            account.set_config("mail_port", sys.argv[4])
-            account.set_config("mail_security", sys.argv[5])
-            account.set_config("send_server", sys.argv[6])
-            account.set_config("send_port", sys.argv[7])
-            account.set_config("send_security", sys.argv[8])
+            logging.info("Account is not configured, configuring from .env file")
+
+            load_dotenv()
+
+            account.set_config("addr", os.getenv("ADDR"))
+            account.set_config("mail_pw", os.getenv("MAIL_PW"))
+            account.set_config("mail_server", os.getenv("MAIL_SERVER"))
+            account.set_config("mail_port", os.getenv("MAIL_PORT"))
+            account.set_config("mail_security", os.getenv("MAIL_SECURITY"))
+            account.set_config("send_server", os.getenv("SEND_SERVER"))
+            account.set_config("send_port", os.getenv("SEND_PORT"))
+            account.set_config("send_security", os.getenv("SEND_SECURITY"))
             account.configure()
             logging.info("Configured")
         else:
