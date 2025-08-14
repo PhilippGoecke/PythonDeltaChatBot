@@ -6,6 +6,6 @@ https://py.delta.chat/jsonrpc/examples.html#echo-bot
 ```shell
 python3 -m venv .
 source bin/activate
-pip install deltachat_rpc_client deltachat-rpc-server
+pip install deltachat_rpc_client deltachat-rpc-server dotenv
 python3 deltachatbot.py
 ```
