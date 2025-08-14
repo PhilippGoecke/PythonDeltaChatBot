@@ -14,10 +14,8 @@ COPY deltachatbot.py .
 
 USER deltachat:deltachat
 
-RUN python -m venv . \
-  && source bin/activate \
-  && pip install --no-cache-dir --upgrade pip \
-  && pip install --no-cache-dir deltachat_rpc_client deltachat-rpc-server dotenv qrcode 
+RUN pip install --no-cache-dir --upgrade pip \
+  && pip install --no-cache-dir --user deltachat_rpc_client deltachat-rpc-server dotenv qrcode 
 
 RUN pwd && ls -lisah
 
