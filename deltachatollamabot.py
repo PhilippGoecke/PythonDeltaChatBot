@@ -71,7 +71,7 @@ def main():
             """Sends a prompt to the Ollama API and returns the response."""
             try:
                 ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-                client = ollama.Client(host=ollama_host) if ollama_host else ollama.Client()
+                client = ollama.Client(host=ollama_host, timeout=60)
                 ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
                 response = client.chat(
                     model=ollama_model,
