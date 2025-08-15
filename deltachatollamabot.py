@@ -14,8 +14,6 @@ import ollama
 import asyncio
 
 def main():
-    # logging.getLogger().setLevel(logging.DEBUG)
-
     with Rpc() as rpc:
         deltachat = DeltaChat(rpc)
         system_info = deltachat.get_system_info()
@@ -88,32 +86,33 @@ def main():
             """Sends a prompt to the Ollama API and returns the response."""
 
             load_dotenv()
+            ollama_lock = asyncio.Lock()
+            async with ollama_lock:
+                try:
+                    ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+                    ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
+                    ollama_api_token = os.getenv("OLLAMA_API_TOKEN")
+                    headers = {}
+                    if ollama_api_token:
+                        headers['Authorization'] = f'Bearer {ollama_api_token}'
 
-            try:
-                ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-                ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
-                ollama_api_token = os.getenv("OLLAMA_API_TOKEN")
-                headers = {}
-                if ollama_api_token:
-                    headers['Authorization'] = f'Bearer {ollama_api_token}'
+                    client = ollama.AsyncClient(host=ollama_host, timeout=60, headers=headers)
 
-                client = ollama.AsyncClient(host=ollama_host, timeout=60, headers=headers)
-
-                response = await client.generate(
-                    model=ollama_model,
-                    prompt=prompt,
-                    think=False,
-                    stream=False,
-                    options={'temperature': 0.5}
-                )
-                text_response = response['response']
-                return text_response
-            except ollama.ResponseError as e:
-                logging.error("Error from Ollama: %s", e.error)
-                return f"Error: {e.error}"
-            except Exception as e:
-                logging.error("An unexpected error occurred with Ollama: %s", e)
-                return "Error: Could not connect to the AI service."
+                    response = await client.generate(
+                        model=ollama_model,
+                        prompt=prompt,
+                        think=False,
+                        stream=False,
+                        options={'temperature': 0.5}
+                    )
+                    text_response = response['response']
+                    return text_response
+                except ollama.ResponseError as e:
+                    logging.error("Error from Ollama: %s", e.error)
+                    return f"Error: {e.error}"
+                except Exception as e:
+                    logging.error("An unexpected error occurred with Ollama: %s", e)
+                    return "Error: Could not connect to the AI service."
 
         def echo_qr():
             qr_code = account.get_qr_code()
@@ -144,5 +143,6 @@ def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    #logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     main()
