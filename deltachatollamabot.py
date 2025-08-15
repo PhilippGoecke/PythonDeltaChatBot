@@ -75,7 +75,9 @@ def main():
                 ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
                 response = client.chat(
                     model=ollama_model,
-                    messages=[{'role': 'user', 'content': prompt}]
+                    messages=[{'role': 'user', 'content': prompt}],
+                    stream=False,
+                    options={'temperature': 0.7}
                 )
                 return response['message']['content']
             except ollama.ResponseError as e:
