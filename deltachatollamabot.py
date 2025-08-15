@@ -69,6 +69,9 @@ def main():
 
         def ask_ollama(prompt):
             """Sends a prompt to the Ollama API and returns the response."""
+
+            load_dotenv()
+
             try:
                 ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
                 client = ollama.Client(host=ollama_host, timeout=60)
