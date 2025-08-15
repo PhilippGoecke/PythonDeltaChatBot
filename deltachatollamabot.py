@@ -82,7 +82,7 @@ def main():
                     stream=False,
                     options={'temperature': 0.7}
                 )
-                return response['message']['content']
+                return response['response']
             except ollama.ResponseError as e:
                 logging.error("Error from Ollama: %s", e.error)
                 return f"Error: {e.error}"
