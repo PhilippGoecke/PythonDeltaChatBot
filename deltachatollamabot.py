@@ -76,9 +76,9 @@ def main():
                 ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
                 client = ollama.Client(host=ollama_host, timeout=60)
                 ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
-                response = client.chat(
+                response = client.generate(
                     model=ollama_model,
-                    messages=[{'role': 'user', 'content': prompt}],
+                    prompt=prompt,
                     stream=False,
                     options={'temperature': 0.7}
                 )
