@@ -54,13 +54,11 @@ def main():
             for message in account.get_next_messages():
                 snapshot = message.get_snapshot()
                 if snapshot.from_id != SpecialContactId.SELF and not snapshot.is_bot and not snapshot.is_info:
-                    try:
-                        snapshot.chat.send_text(snapshot.text)
+                    chat_text = snapshot.text
+                    snapshot.chat.send_text(chat_text)
 
-                        response = text_to_ollama(snapshot.text)
-                        snapshot.chat.send_text(response)
-                    except Exception as e:
-                        logging.error("Failed to send message: %s", e)
+                    response = text_to_ollama(chat_text)
+                    snapshot.chat.send_text(response)
 
                 snapshot.message.mark_seen()
 
