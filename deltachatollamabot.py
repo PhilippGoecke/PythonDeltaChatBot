@@ -66,7 +66,7 @@ def main():
                  full_prompt = f"You are a helpful assistant. Please answer the following question: {user_prompt}"
 
             logging.info("Asking Ollama: %s", full_prompt)
-            response = ask_ollama_async(full_prompt)
+            response = ask_ollama(full_prompt)
             logging.info("AI Response: %s", response)
             return response
 
