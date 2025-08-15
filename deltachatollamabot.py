@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 import qrcode
 import ollama
+import asyncio
 
 def main():
     # logging.getLogger().setLevel(logging.DEBUG)
@@ -92,16 +93,15 @@ def main():
 
             try:
                 ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-                client = ollama.Client(host=ollama_host, timeout=60)
+                client = ollama.AsyncClient(host=ollama_host, timeout=60)
                 ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
-                response = client.generate(
+                response = await client.generate(
                     model=ollama_model,
                     prompt=prompt,
-                    think='low', # low, medium, high
+                    think=False,
                     stream=False,
-                    options={'temperature': 0.7}
+                    options={'temperature': 0.5}
                 )
-                # Post-process the response to remove unwanted tags like <think>
                 text_response = response['response']
                 return text_response
             except ollama.ResponseError as e:
