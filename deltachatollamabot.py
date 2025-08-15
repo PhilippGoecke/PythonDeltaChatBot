@@ -82,7 +82,7 @@ def main():
             full_prompt = f"{system_prompt}\n\n[USER INPUT]\n{user_prompt}\n[/USER INPUT]\n\nAssistant:"
 
             logging.debug("Asking Ollama: %s", full_prompt)
-            response = ask_ollama(full_prompt)
+            response = asyncio.run(ask_ollama(full_prompt))
             logging.debug("AI Response: %s", response)
             return response
 
