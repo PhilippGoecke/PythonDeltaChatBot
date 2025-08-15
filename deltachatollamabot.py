@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 import qrcode
 import ollama
+import re
 
 def main():
     # logging.getLogger().setLevel(logging.DEBUG)
@@ -100,7 +101,11 @@ def main():
                     stream=False,
                     options={'temperature': 0.7}
                 )
-                return response['response']
+                # Post-process the response to remove unwanted tags like <think>
+                text_response = response['response']
+                # Use a non-greedy match to remove the tags and their content
+                cleaned_response = re.sub(r'<think>.*?</think>', '', text_response, flags=re.DOTALL).strip()
+                return cleaned_response
             except ollama.ResponseError as e:
                 logging.error("Error from Ollama: %s", e.error)
                 return f"Error: {e.error}"
