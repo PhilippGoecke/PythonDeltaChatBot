@@ -14,6 +14,8 @@ import ollama
 import asyncio
 
 def main():
+    # logging.getLogger().setLevel(logging.DEBUG)
+
     with Rpc() as rpc:
         deltachat = DeltaChat(rpc)
         system_info = deltachat.get_system_info()
@@ -91,10 +93,10 @@ def main():
                 try:
                     ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
                     ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
-                    ollama_api_token = os.getenv("OLLAMA_API_TOKEN")
+                    ollama_api_key = os.getenv("OLLAMA_API_KEY")
                     headers = {}
-                    if ollama_api_token:
-                        headers['Authorization'] = f'Bearer {ollama_api_token}'
+                    if ollama_api_key:
+                        headers['Authorization'] = f'Bearer {ollama_api_key}'
 
                     client = ollama.AsyncClient(host=ollama_host, timeout=60, headers=headers)
 
@@ -143,6 +145,5 @@ def main():
 
 
 if __name__ == "__main__":
-    #logging.basicConfig(level=logging.INFO)
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     main()
