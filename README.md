@@ -81,9 +81,9 @@ OLLAMA_MODEL="gpt-oss:20b"
 ### 4. Run Ollama serve 🖥️
 
 ```shell
-export OLLAMA_API_TOKEN=$(openssl rand -hex 32)
-echo "OLLAMA_API_TOKEN: '$OLLAMA_API_TOKEN'"
-OLLAMA_HOST="http://0.0.0.0:11434/" ollama serve --auth-token $OLLAMA_API_TOKEN
+export OLLAMA_API_KEY=$(openssl rand -hex 32)
+echo "OLLAMA_API_KEY: '$OLLAMA_API_KEY'"
+OLLAMA_HOST="http://0.0.0.0:11434/" ollama serve
 ```
 
 ### 5. Run the Bot ▶️
