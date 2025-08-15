@@ -86,7 +86,7 @@ def main():
             logging.debug("AI Response: %s", response)
             return response
 
-        def ask_ollama(prompt):
+        async def ask_ollama(prompt):
             """Sends a prompt to the Ollama API and returns the response."""
 
             load_dotenv()
