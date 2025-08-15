@@ -62,8 +62,15 @@ def main():
 
         def text_to_ollama(user_prompt):
             """Gets input from the user and asks Ollama."""
-            if user_prompt:
-                 full_prompt = f"You are a helpful assistant. Please answer the following question: {user_prompt}"
+            if not user_prompt:
+                return "Hello, somebody there?"
+
+            system_prompt = (
+                "You are a helpful and friendly AI assistant in a chat application. "
+                "Provide clear, concise, and informative answers to the user's questions. "
+                "If you don't know the answer, it's better to say so than to make something up."
+            )
+            full_prompt = f"{system_prompt}\n\nUser: {user_prompt}\nAssistant:"
 
             logging.info("Asking Ollama: %s", full_prompt)
             response = ask_ollama(full_prompt)
