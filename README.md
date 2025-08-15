@@ -56,11 +56,11 @@ bash podman-run-bot.bash
 
 You can also run the bot with a local Large Language Model (LLM) using [Ollama](https://ollama.com/).
 
-### 1. Install and Run Ollama
+### 1. Install and Run Ollama 📥
 
 Follow the official instructions to [install Ollama](https://ollama.com/download) on your system.
 
-### 2. Pull a Model
+### 2. Pull a Model 💾
 
 Pull a model for the bot to use. For example, to use `gpt-oss:20b`:
 
@@ -68,7 +68,7 @@ Pull a model for the bot to use. For example, to use `gpt-oss:20b`:
 ollama pull gpt-oss:20b
 ```
 
-### 3. Update Configuration
+### 3. Update Configuration ⚙️
 
 Enable Ollama in your `.env`/`.botenv` file and specify the model.
 
@@ -78,13 +78,13 @@ OLLAMA_HOST="http://localhost:11434/"
 OLLAMA_MODEL="gpt-oss:20b"
 ```
 
-### 4. Run Ollama serve
+### 4. Run Ollama serve 🖥️
 
 ```shell
 OLLAMA_HOST="http://0.0.0.0:11434/" ollama serve
 ```
 
-### 5. Run the Bot
+### 5. Run the Bot ▶️
 
 Start the bot using either Python directly or the Podman script. The bot will now respond using the configured Ollama model.
 
