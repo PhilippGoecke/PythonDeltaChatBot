@@ -77,9 +77,9 @@ def main():
             # Clearly delimit user input to separate it from the system prompt.
             full_prompt = f"{system_prompt}\n\n[USER INPUT]\n{user_prompt}\n[/USER INPUT]\n\nAssistant:"
 
-            logging.info("Asking Ollama: %s", full_prompt)
+            logging.debug("Asking Ollama: %s", full_prompt)
             response = ask_ollama(full_prompt)
-            logging.info("AI Response: %s", response)
+            logging.debug("AI Response: %s", response)
             return response
 
         def ask_ollama(prompt):
