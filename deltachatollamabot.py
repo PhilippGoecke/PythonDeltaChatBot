@@ -53,8 +53,17 @@ def main():
             for message in account.get_next_messages():
                 snapshot = message.get_snapshot()
                 if snapshot.from_id != SpecialContactId.SELF and not snapshot.is_bot and not snapshot.is_info:
+                    # Echo the message back immediately
                     snapshot.chat.send_text(snapshot.text)
-                    snapshot.chat.send_text(text_to_ollama(snapshot.text))
+
+                    # Define a function to run in a separate thread
+                    def send_ollama_response():
+                        response = text_to_ollama(snapshot.text)
+                        snapshot.chat.send_text(response)
+
+                    # Start the thread to avoid blocking message processing
+                    thread = threading.Thread(target=send_ollama_response)
+                    thread.start()
                 snapshot.message.mark_seen()
 
         def text_to_ollama(user_prompt):
@@ -63,7 +72,7 @@ def main():
                  full_prompt = f"You are a helpful assistant. Please answer the following question: {user_prompt}"
 
             logging.info("Asking Ollama: %s", full_prompt)
-            response = ask_ollama(full_prompt)
+            response = asyncio.run(ask_ollama_async(full_prompt))
             logging.info("AI Response: %s", response)
             return response
 
