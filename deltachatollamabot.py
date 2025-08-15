@@ -91,8 +91,14 @@ def main():
 
             try:
                 ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-                client = ollama.AsyncClient(host=ollama_host, timeout=60)
                 ollama_model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
+                ollama_api_token = os.getenv("OLLAMA_API_TOKEN")
+                headers = {}
+                if ollama_api_token:
+                    headers['Authorization'] = f'Bearer {ollama_api_token}'
+
+                client = ollama.AsyncClient(host=ollama_host, timeout=60, headers=headers)
+
                 response = await client.generate(
                     model=ollama_model,
                     prompt=prompt,
