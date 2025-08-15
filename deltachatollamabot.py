@@ -97,7 +97,7 @@ def main():
                 response = client.generate(
                     model=ollama_model,
                     prompt=prompt,
-                    think=False,
+                    think='low', # low, medium, high
                     stream=False,
                     options={'temperature': 0.7}
                 )
