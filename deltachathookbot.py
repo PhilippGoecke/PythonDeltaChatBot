@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Advanced echo bot example.
-
 it will echo back any message that has non-empty text and also supports the /help command.
 """
 
@@ -12,7 +11,6 @@ from deltachat_rpc_client import Bot, DeltaChat, EventType, Rpc, events
 
 hooks = events.HookCollection()
 
-
 @hooks.on(events.RawEvent)
 def log_event(event):
     if event.kind == EventType.INFO:
@@ -20,26 +18,21 @@ def log_event(event):
     elif event.kind == EventType.WARNING:
         logging.warning(event.msg)
 
-
 @hooks.on(events.RawEvent(EventType.ERROR))
 def log_error(event):
     logging.error(event.msg)
-
 
 @hooks.on(events.MemberListChanged)
 def on_memberlist_changed(event):
     logging.info("member %s was %s", event.member, "added" if event.member_added else "removed")
 
-
 @hooks.on(events.GroupImageChanged)
 def on_group_image_changed(event):
     logging.info("group image %s", "deleted" if event.image_deleted else "changed")
 
-
 @hooks.on(events.GroupNameChanged)
 def on_group_name_changed(event):
     logging.info("group name changed, old name: %s", event.old_name)
-
 
 @hooks.on(events.NewMessage(func=lambda e: not e.command))
 def echo(event):
@@ -47,12 +40,10 @@ def echo(event):
     if snapshot.text or snapshot.file:
         snapshot.chat.send_message(text=snapshot.text, file=snapshot.file)
 
-
 @hooks.on(events.NewMessage(command="/help"))
 def help_command(event):
     snapshot = event.message_snapshot
     snapshot.chat.send_text("Send me any message and I will echo it back")
-
 
 def main():
     with Rpc() as rpc:
@@ -65,10 +56,28 @@ def main():
 
         bot = Bot(account, hooks)
         if not bot.is_configured():
+            logging.info("Account is not configured, configuring from .env file")
+
+            load_dotenv()
+
+            account.set_config("email", os.getenv("ADDR"))
+            account.set_config("password", os.getenv("MAIL_PW"))
+            if os.getenv("MAIL_SERVER"):
+                account.set_config("mail_server", os.getenv("MAIL_SERVER"))
+            if os.getenv("MAIL_PORT"):
+                account.set_config("mail_port", os.getenv("MAIL_PORT"))
+            if os.getenv("MAIL_SECURITY"):
+                account.set_config("mail_security", os.getenv("MAIL_SECURITY"))
+            if os.getenv("SEND_SERVER"):
+                account.set_config("send_server", os.getenv("SEND_SERVER"))
+            if os.getenv("SEND_PORT"):
+                account.set_config("send_port", os.getenv("SEND_PORT"))
+            if os.getenv("SEND_SECURITY"):
+                account.set_config("send_security", os.getenv("SEND_SECURITY"))
+            
             configure_thread = Thread(run=bot.configure, kwargs={"email": sys.argv[1], "password": sys.argv[2]})
             configure_thread.start()
         bot.run_forever()
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
