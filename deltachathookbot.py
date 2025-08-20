@@ -62,18 +62,21 @@ def main():
 
             load_dotenv()
 
-            kwargs = {
-                "email": os.getenv("ADDR"),
-                "password": os.getenv("MAIL_PW"),
-                "mail_server": os.getenv("MAIL_SERVER"),
-                "mail_port": os.getenv("MAIL_PORT"),
-                "mail_security": os.getenv("MAIL_SECURITY"),
-                "send_server": os.getenv("SEND_SERVER"),
-                "send_port": os.getenv("SEND_PORT"),
-                "send_security": os.getenv("SEND_SECURITY"),
+            kwargs = {}
+            env_map = {
+                "email": "ADDR",
+                "password": "MAIL_PW",
+                "mail_server": "MAIL_SERVER",
+                "mail_port": "MAIL_PORT",
+                "mail_security": "MAIL_SECURITY",
+                "send_server": "SEND_SERVER",
+                "send_port": "SEND_PORT",
+                "send_security": "SEND_SECURITY",
             }
-            # Filter out keys where the value is None
-            kwargs = {k: v for k, v in kwargs.items() if v is not None}
+            for key, env_var in env_map.items():
+                value = os.getenv(env_var)
+                if value:
+                    kwargs[key] = value
 
             configure_thread = Thread(run=bot.configure, kwargs=kwargs)
             configure_thread.start()
