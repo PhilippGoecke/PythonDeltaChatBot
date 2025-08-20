@@ -8,6 +8,8 @@ import sys
 from threading import Thread
 
 from deltachat_rpc_client import Bot, DeltaChat, EventType, Rpc, events
+from dotenv import load_dotenv
+import os
 
 hooks = events.HookCollection()
 
@@ -60,22 +62,20 @@ def main():
 
             load_dotenv()
 
-            account.set_config("email", os.getenv("ADDR"))
-            account.set_config("password", os.getenv("MAIL_PW"))
-            if os.getenv("MAIL_SERVER"):
-                account.set_config("mail_server", os.getenv("MAIL_SERVER"))
-            if os.getenv("MAIL_PORT"):
-                account.set_config("mail_port", os.getenv("MAIL_PORT"))
-            if os.getenv("MAIL_SECURITY"):
-                account.set_config("mail_security", os.getenv("MAIL_SECURITY"))
-            if os.getenv("SEND_SERVER"):
-                account.set_config("send_server", os.getenv("SEND_SERVER"))
-            if os.getenv("SEND_PORT"):
-                account.set_config("send_port", os.getenv("SEND_PORT"))
-            if os.getenv("SEND_SECURITY"):
-                account.set_config("send_security", os.getenv("SEND_SECURITY"))
-            
-            configure_thread = Thread(run=bot.configure, kwargs={"email": sys.argv[1], "password": sys.argv[2]})
+            kwargs = {
+                "email": os.getenv("ADDR"),
+                "password": os.getenv("MAIL_PW"),
+                "mail_server": os.getenv("MAIL_SERVER"),
+                "mail_port": os.getenv("MAIL_PORT"),
+                "mail_security": os.getenv("MAIL_SECURITY"),
+                "send_server": os.getenv("SEND_SERVER"),
+                "send_port": os.getenv("SEND_PORT"),
+                "send_security": os.getenv("SEND_SECURITY"),
+            }
+            # Filter out keys where the value is None
+            kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+            configure_thread = Thread(run=bot.configure, kwargs=kwargs)
             configure_thread.start()
         bot.run_forever()
 
