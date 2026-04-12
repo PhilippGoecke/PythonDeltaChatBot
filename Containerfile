@@ -12,7 +12,7 @@ VOLUME /home/deltachat/data
 
 WORKDIR /home/deltachat/bot
 
-RUN cp -rv /home/deltachat/data/* /home/deltachat/bot
+RUN cp -rv /home/deltachat/data/* /home/deltachat/bot || true
 
 COPY --chown=deltachat:deltachat .botenv .env
 COPY --chown=deltachat:deltachat deltachatbot.py .
