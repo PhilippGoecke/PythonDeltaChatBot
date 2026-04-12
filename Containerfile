@@ -12,6 +12,8 @@ VOLUME /home/deltachat/data
 
 WORKDIR /home/deltachat/bot
 
+RUN cp -rv /home/deltachat/data/* /home/deltachat/bot
+
 COPY --chown=deltachat:deltachat .botenv .env
 COPY --chown=deltachat:deltachat deltachatbot.py .
 
@@ -21,4 +23,4 @@ ENV PATH=/home/deltachat/.local/bin:$PATH
 
 RUN pip install deltachat_rpc_client deltachat-rpc-server dotenv qrcode 
 
-CMD ["python", "deltachatbot.py"]
+CMD ["sh", "-c", "python deltachatbot.py & sleep 5 && cp -r /home/deltachat/bot /home/deltachat/data/"]
