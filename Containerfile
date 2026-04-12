@@ -4,15 +4,16 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt upgrade -y
 
-RUN useradd -ms /bin/bash deltachat \
-  && mkdir -p /home/deltachat/bot \
-  && chown deltachat:deltachat -R /home/deltachat
+RUN useradd --create-home --shell /bin/bash deltachat
+
+RUN chown deltachat:deltachat -R /home/deltachat
+
+VOLUME /home/deltachat/data
+
 WORKDIR /home/deltachat/bot
 
-VOLUME /home/deltachat/bot
-
-COPY .botenv .env
-COPY deltachatbot.py .
+COPY --chown=deltachat:deltachat .botenv .env
+COPY --chown=deltachat:deltachat deltachatbot.py .
 
 USER deltachat:deltachat
 
