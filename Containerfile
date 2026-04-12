@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.14-slim-trixie
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -8,6 +8,8 @@ RUN useradd -ms /bin/bash deltachat \
   && mkdir -p /home/deltachat/bot \
   && chown deltachat:deltachat -R /home/deltachat
 WORKDIR /home/deltachat/bot
+
+VOLUME /home/deltachat/bot
 
 COPY .botenv .env
 COPY deltachatbot.py .
