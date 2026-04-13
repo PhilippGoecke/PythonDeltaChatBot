@@ -22,6 +22,6 @@ USER deltachat:deltachat
 
 ENV PATH=/home/deltachat/.local/bin:$PATH
 
-RUN pip install deltachat_rpc_client deltachat-rpc-server dotenv qrcode toml
+RUN pip install deltachat_rpc_client deltachat-rpc-server dotenv qrcode
 
 CMD ["sh", "-c", "python deltachatbot.py & sleep 5 && cp -r /home/deltachat/bot/* /home/deltachat/data/ && sleep infinity"]
