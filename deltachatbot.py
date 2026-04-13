@@ -20,21 +20,15 @@ def main():
         system_info = deltachat.get_system_info()
         logging.info("Running deltachat core %s", system_info["deltachat_core_version"])
 
-        if os.path.exists("accounts/accounts.toml"):
-                with open("accounts/accounts.toml", "r", encoding="utf-8") as f:
-                        config = toml.load(f)
-
-                for cfg in config.get("accounts", []):
-                        account = deltachat.add_account()
-                        for key, value in cfg.items():
-                                logging.info("cfg id: %s", cfg.get("id", 0))
-                                logging.info("  key: %s", key)
-                                logging.info("  value: %s", value)
-                                account.set_config(cfg.get("id", 0), key, str(value))
 
         accounts = deltachat.get_all_accounts()
         logging.info("%s Account(s) found", len(accounts))
-        account = accounts[0] if accounts else deltachat.add_account()
+        if len(accounts) == 0:
+            logging.info("No accounts found, creating a new one")
+            account = deltachat.add_account()
+        else:
+            logging.info("Using the first account found")
+            account = accounts[0]
 
         account.set_config("bot", "1")
         if not account.is_configured():
