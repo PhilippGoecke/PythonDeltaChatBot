@@ -22,7 +22,13 @@ def main():
         logging.info("Running deltachat core %s", system_info["deltachat_core_version"])
 
         accounts = deltachat.get_all_accounts()
-        account = accounts[0] if accounts else deltachat.add_account()
+        logging.info("%s Account(s) found", len(accounts))
+        if len(accounts) == 0:
+            logging.info("No accounts found, creating a new one")
+            account = deltachat.add_account()
+        else:
+            logging.info("Using the first account found")
+            account = accounts[0]
 
         account.set_config("bot", "1")
         if not account.is_configured():
