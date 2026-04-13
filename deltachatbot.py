@@ -19,7 +19,6 @@ def main():
         system_info = deltachat.get_system_info()
         logging.info("Running deltachat core %s", system_info["deltachat_core_version"])
 
-
         accounts = deltachat.get_all_accounts()
         logging.info("%s Account(s) found", len(accounts))
         if len(accounts) == 0:
