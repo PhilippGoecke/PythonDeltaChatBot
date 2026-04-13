@@ -20,6 +20,15 @@ def main():
         system_info = deltachat.get_system_info()
         logging.info("Running deltachat core %s", system_info["deltachat_core_version"])
 
+        with open("accounts.json", "r", encoding="utf-8") as f:
+                config = json.load(f)
+
+        for cfg in config.get("accounts", []):
+                account_id = deltachat.add_account()
+                account = deltachat.get_account(account_id)
+                for key, value in cfg.items():
+                        account.set_config(key, value)
+
         accounts = deltachat.get_all_accounts()
         logging.info("%s Account(s) found", len(accounts))
         account = accounts[0] if accounts else deltachat.add_account()
