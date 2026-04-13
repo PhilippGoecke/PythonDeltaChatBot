@@ -10,7 +10,6 @@ from deltachat_rpc_client import DeltaChat, EventType, Rpc, SpecialContactId
 from dotenv import load_dotenv
 import os
 import qrcode
-import toml
 
 def main():
     # logging.getLogger().setLevel(logging.DEBUG)
