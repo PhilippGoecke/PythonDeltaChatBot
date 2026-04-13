@@ -25,8 +25,7 @@ def main():
                         config = toml.load(f)
 
                 for cfg in config.get("accounts", []):
-                        account_id = deltachat.add_account()
-                        account = deltachat.get_account(account_id)
+                        account = deltachat.add_account()
                         for key, value in cfg.items():
                                 account.set_config(key, value)
 
