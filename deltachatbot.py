@@ -27,6 +27,9 @@ def main():
                 for cfg in config.get("accounts", []):
                         account = deltachat.add_account()
                         for key, value in cfg.items():
+                                logging.info("cfg id: %s", cfg.get("id", 0))
+                                logging.info("  key: %s", key)
+                                logging.info("  value: %s", value)
                                 account.set_config(cfg.get("id", 0), key, str(value))
 
         accounts = deltachat.get_all_accounts()
